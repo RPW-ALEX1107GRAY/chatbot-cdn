@@ -14,6 +14,8 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
+            z-index: 1000;
+            display: none;
             width: 380px;
             height: 600px;
             background: var(--chat--color-background);
@@ -21,12 +23,7 @@
             box-shadow: 0 8px 32px rgba(133, 79, 255, 0.15);
             border: 1px solid rgba(133, 79, 255, 0.2);
             overflow: hidden;
-            opacity: 0;
-            transform: translateY(30px) scale(0.95);
-            pointer-events: none;
-            transition:
-                opacity 0.35s ease,
-                transform 0.35s ease;
+            font-family: inherit;
         }
 
         .chat-widget .chat-container.position-left {
@@ -35,9 +32,8 @@
         }
 
         .chat-widget .chat-container.open {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            pointer-events: all;
+            display: flex;
+            flex-direction: column;
         }
 
         .chat-widget .brand-header {
@@ -495,12 +491,7 @@
     
     toggleButton.addEventListener('click', () => {
         chatContainer.classList.toggle('open');
-
-        // Button pulse effect
-        toggleButton.style.transform = 'scale(0.9)';
-        setTimeout(() => toggleButton.style.transform = 'scale(1)', 150);
     });
-
 
     // Add close button handlers
     const closeButtons = chatContainer.querySelectorAll('.close-button');
