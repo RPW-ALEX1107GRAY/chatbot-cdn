@@ -31,9 +31,36 @@
             left: 20px;
         }
 
+        @keyframes chatOpen {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes chatClose {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+            }
+        }
+
         .chat-widget .chat-container.open {
             display: flex;
             flex-direction: column;
+            animation: chatOpen 0.35s ease-out forwards;
+        }
+
+        .chat-widget .chat-container.closing {
+            animation: chatClose 0.25s ease-in forwards;
         }
 
         .chat-widget .brand-header {
@@ -490,8 +517,23 @@
     });
     
     toggleButton.addEventListener('click', () => {
-        chatContainer.classList.toggle('open');
+        if (chatContainer.classList.contains('open')) {
+            chatContainer.classList.remove('open');
+            chatContainer.classList.add('closing');
+            setTimeout(() => {
+                chatContainer.classList.remove('closing');
+                chatContainer.style.display = 'none';
+            }, 250); // match animation duration
+        } else {
+            chatContainer.style.display = 'flex';
+            chatContainer.classList.add('open');
+        }
+
+        // Toggle button click “pop” animation
+        toggleButton.style.transform = 'scale(0.9)';
+        setTimeout(() => toggleButton.style.transform = 'scale(1)', 150);
     });
+
 
     // Add close button handlers
     const closeButtons = chatContainer.querySelectorAll('.close-button');
