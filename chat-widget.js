@@ -14,8 +14,6 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            z-index: 1000;
-            display: none;
             width: 380px;
             height: 600px;
             background: var(--chat--color-background);
@@ -23,7 +21,12 @@
             box-shadow: 0 8px 32px rgba(133, 79, 255, 0.15);
             border: 1px solid rgba(133, 79, 255, 0.2);
             overflow: hidden;
-            font-family: inherit;
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            pointer-events: none;
+            transition:
+                opacity 0.35s ease,
+                transform 0.35s ease;
         }
 
         .chat-widget .chat-container.position-left {
@@ -31,36 +34,10 @@
             left: 20px;
         }
 
-        @keyframes chatOpen {
-            0% {
-                opacity: 0;
-                transform: translateY(20px) scale(0.98);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        @keyframes chatClose {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(20px) scale(0.98);
-            }
-        }
-
         .chat-widget .chat-container.open {
-            display: flex;
-            flex-direction: column;
-            animation: chatOpen 0.35s ease-out forwards;
-        }
-
-        .chat-widget .chat-container.closing {
-            animation: chatClose 0.25s ease-in forwards;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
         }
 
         .chat-widget .brand-header {
@@ -160,7 +137,6 @@
         }
 
         .chat-widget .chat-interface {
-            display: none;
             flex-direction: column;
             height: 100%;
         }
@@ -517,19 +493,9 @@
     });
     
     toggleButton.addEventListener('click', () => {
-        if (chatContainer.classList.contains('open')) {
-            chatContainer.classList.remove('open');
-            chatContainer.classList.add('closing');
-            setTimeout(() => {
-                chatContainer.classList.remove('closing');
-                chatContainer.style.display = 'none';
-            }, 250); // match animation duration
-        } else {
-            chatContainer.style.display = 'flex';
-            chatContainer.classList.add('open');
-        }
+        chatContainer.classList.toggle('open');
 
-        // Toggle button click “pop” animation
+        // Button pulse effect
         toggleButton.style.transform = 'scale(0.9)';
         setTimeout(() => toggleButton.style.transform = 'scale(1)', 150);
     });
