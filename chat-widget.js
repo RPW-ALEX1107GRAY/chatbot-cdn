@@ -137,6 +137,7 @@
         }
 
         .chat-widget .chat-interface {
+            display: none;
             flex-direction: column;
             height: 100%;
         }
